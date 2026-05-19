@@ -41,23 +41,28 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-// ── Start server ──────────────────────────────────────────────────────────────
-const server = app.listen(PORT, () => {
-  console.log("\n🚀 Inventur API server berjalan di http://localhost:" + PORT);
-  console.log("   Frontend : http://localhost:" + PORT + "/pages/sign-in.html");
-  console.log("   API Base : http://localhost:" + PORT + "/api");
-  console.log("   Database : " + (process.env.DATABASE_URL ? "DATABASE_URL (.env)" : "belum dikonfigurasi") + "\n");
-});
+// ── Start server (hanya jika jalan di lokal, bukan di Vercel) ────────────────
+if (process.env.NODE_ENV !== "production") {
+  const server = app.listen(PORT, () => {
+    console.log("\n🚀 Inventur API server berjalan di http://localhost:" + PORT);
+    console.log("   Frontend : http://localhost:" + PORT + "/pages/sign-in.html");
+    console.log("   API Base : http://localhost:" + PORT + "/api");
+    console.log("   Database : " + (process.env.DATABASE_URL ? "DATABASE_URL (.env)" : "belum dikonfigurasi") + "\n");
+  });
 
-server.on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.error("❌ Port " + PORT + " sudah digunakan. Coba port lain.");
-  } else {
-    console.error("❌ Server error:", err);
-  }
-  process.exit(1);
-});
+  server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error("❌ Port " + PORT + " sudah digunakan. Coba port lain.");
+    } else {
+      console.error("❌ Server error:", err);
+    }
+    process.exit(1);
+  });
 
-// Jaga process tetap hidup
-process.on("SIGINT",  () => { console.log("\n👋 Server dihentikan."); process.exit(0); });
-process.on("SIGTERM", () => { console.log("\n👋 Server dihentikan."); process.exit(0); });
+  // Jaga process tetap hidup
+  process.on("SIGINT",  () => { console.log("\n👋 Server dihentikan."); process.exit(0); });
+  process.on("SIGTERM", () => { console.log("\n👋 Server dihentikan."); process.exit(0); });
+}
+
+// Export app untuk Vercel Serverless Function
+module.exports = app;
