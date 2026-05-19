@@ -5,7 +5,8 @@
 (function () {
   "use strict";
 
-  const BASE = "http://localhost:3001/api";
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const BASE = isLocalhost ? "http://localhost:3001/api" : "/api";
 
   function getToken() {
     try {
