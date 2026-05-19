@@ -1,0 +1,47 @@
+{
+  "name": "pos_inventur",
+  "version": "1.0.0",
+  "description": "Inventur - Inventory & POS Management System",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run watch:css\"",
+    "start": "node server/index.js",
+    "server": "node server/index.js",
+    "build:css": "tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.css --watch",
+    "db:migrate": "npx prisma@5 migrate dev --name init",
+    "db:seed": "node prisma/seed.js",
+    "db:add-user": "node prisma/add-user.js",
+    "db:clear": "node prisma/clear-data.js",
+    "db:studio": "npx prisma@5 studio",
+    "db:reset": "npx prisma@5 migrate reset --force",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:push": "npx prisma@5 db push",
+    "db:setup": "npx prisma@5 generate && npx prisma@5 db push && node prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "dotenv": "^17.4.2",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^4.3.0",
+    "tsx": "^4.22.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^3.0.3",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "google-auth-library": "^10.6.2",
+    "jsonwebtoken": "^9.0.3",
+    "next-auth": "^4.24.14"
+  }
+}

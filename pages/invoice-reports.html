@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventur - Invoice Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" />
+  <link rel="stylesheet" href="../assets/css/tailwind.css" />
+  <link rel="stylesheet" href="../assets/css/app.css" />
+  <link rel="stylesheet" href="../assets/css/invoice-reports.css" />
+</head>
+
+<body class="min-w-80 bg-inventur-bg font-sans text-inventur-text antialiased">
+  <div class="app-shell grid min-h-screen grid-cols-[250px_minmax(0,1fr)] max-[980px]:grid-cols-1">
+    <aside
+      class="app-sidebar sticky top-0 z-20 flex h-screen flex-col border-r border-inventur-border bg-white max-[980px]:static max-[980px]:h-auto">
+      <a class="app-logo flex h-[82px] items-center border-b border-inventur-border px-6 py-5 max-[980px]:h-auto"
+        href="./dashboard.html"><img src="../assets/img/Logo.svg" alt="Inventur" /></a>
+      <nav class="app-nav flex flex-1 flex-col gap-[22px] p-[26px_22px] max-[980px]:grid max-[980px]:grid-cols-2">
+        <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0">
+          <p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Main</p><a
+            class="nav-link flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold"
+            href="./dashboard.html"><img src="../assets/img/icons/layout-grid-neutral.svg" alt="" />Dashboard</a>
+        </section>
+        <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0">
+          <p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Inventory</p><a
+            class="nav-link flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold"
+            href="./products.html"><img src="../assets/img/icons/box.svg" alt="" />Products</a>
+        </section>
+        <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0">
+          <p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Reports</p><a
+            class="nav-link active flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold"
+            href="./invoice-reports.html"><img src="../assets/img/icons/invoice-report.svg" alt="" />Invoice Report</a>
+        </section>
+        <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0">
+          <p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Settings</p><a
+            class="nav-link flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold"
+            href="./sign-in.html"><img src="../assets/img/icons/logout.svg" alt="" />Logout</a>
+        </section>
+      </nav>
+    </aside>
+    <main class="app-main flex min-w-0 flex-col">
+      <header
+        class="app-topbar flex min-h-[82px] items-center justify-end gap-3.5 border-b border-inventur-border bg-white px-8 py-4 max-[980px]:flex-wrap max-[980px]:justify-start">
+        <a class="btn btn-navy inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-[18px] text-sm font-semibold"
+          href="./pos.html"><img src="../assets/img/icons/device-laptop.svg" alt="" />POS</a>
+      </header>
+      <section class="app-content report-page min-w-0 px-8 py-7 max-[980px]:p-5">
+        <div class="page-title-row">
+          <div class="page-title">
+            <h1>Invoice Report</h1>
+            <div class="breadcrumb"><span>Dashboard</span><span>›</span><span>Invoice Report</span></div>
+          </div>
+          <div class="page-actions"><button class="icon-btn"><img src="../assets/img/icons/Refresh Icon.svg"
+                alt="" /></button><button class="icon-btn"><img src="../assets/img/icons/chevron-up.svg"
+                alt="" /></button></div>
+        </div>
+        <div class="report-stats">
+          <article class="report-stat green"><img src="../assets/img/icons/align-box-bottom-left-filled.svg" alt="" />
+            <div><span>Total Amount</span><strong>$0</strong></div>
+          </article>
+          <article class="report-stat blue"><img src="../assets/img/icons/cash-banknote.svg" alt="" />
+            <div><span>Total Paid</span><strong>$0</strong></div>
+          </article>
+          <article class="report-stat orange"><img src="../assets/img/icons/moneybag.svg" alt="" />
+            <div><span>Total Unpaid</span><strong>$0</strong></div>
+          </article>
+          <article class="report-stat red"><img src="../assets/img/icons/alert-circle-filled.svg" alt="" />
+            <div><span>Overdue</span><strong>$0</strong></div>
+          </article>
+        </div>
+        <section class="card report-filter">
+          <label>Choose Date <div class="field-like date-range-control"><img src="../assets/img/icons/Calendar Icon.svg"
+                alt="" /><input class="date-start" type="date" /><span>-</span><input class="date-end" type="date" /></div></label>
+          <label>Customer <select class="select-field">
+              <option>All</option>
+            </select></label>
+          <label>Status <select class="select-field">
+              <option>All</option>
+            </select></label>
+          <button class="btn btn-primary">Generate Report</button>
+        </section>
+        <section class="card data-card">
+          <div class="table-toolbar">
+            <h2>Inventory Report</h2>
+            <div class="table-filters"><button class="action-btn"><img src="../assets/img/icons/as PDF.svg"
+                  alt="" /></button><button class="action-btn"><img src="../assets/img/icons/as Excel.svg"
+                  alt="" /></button><button class="action-btn"><img src="../assets/img/icons/printer.svg"
+                  alt="" /></button></div>
+          </div>
+          <div class="data-table-wrap">
+            <table class="data-table report-table">
+              <thead>
+                <tr>
+                  <th>Invoice Number</th>
+                  <th>Customer</th>
+                  <th>Due Date</th>
+                  <th>Amount</th>
+                  <th>Paid</th>
+                  <th>Amount Due</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="7" style="text-align:center;padding:40px;color:#94a3b8">Memuat data invoice...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <footer class="table-footer">
+            <div class="row-size">Row Per Page <button class="btn">10 <img src="../assets/img/icons/Dropdown Icon.svg"
+                  alt="" /></button> Entries</div>
+            <div class="pagination" hidden></div>
+          </footer>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/invoice-reports.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventur - POS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" />
+    <link rel="stylesheet" href="../assets/css/tailwind.css" />
+    <link rel="stylesheet" href="../assets/css/app.css" />
+    <link rel="stylesheet" href="../assets/css/pos.css" />
+  </head>
+  <body class="min-w-80 bg-inventur-bg font-sans text-inventur-text antialiased">
+    <main class="pos-screen min-h-screen bg-inventur-bg">
+      <header class="pos-topbar flex items-center border-b border-inventur-border bg-white">
+        <img src="../assets/img/Logo.svg" alt="Inventur" />
+      </header>
+
+      <div class="pos-layout grid min-h-0 gap-6">
+        <section class="pos-catalog min-w-0">
+          <div class="pos-actions card rounded-lg border border-inventur-border bg-white shadow-inventur">
+            <button class="pos-action pos-action-green" type="button">
+              <img src="../assets/img/icons/shopping-cart.svg" alt="" /> View Orders
+            </button>
+            <button class="pos-action pos-action-purple" type="button">
+              <img src="../assets/img/icons/u_refresh.svg" alt="" /> Reset
+            </button>
+            <button class="pos-action pos-action-blue" type="button">
+              <img src="../assets/img/icons/u_redo.svg" alt="" /> Transaction
+            </button>
+          </div>
+
+          <section class="pos-section">
+            <div class="pos-section-title">
+              <h1>Categories</h1>
+              <div class="pos-slide-buttons">
+                <button type="button"><img src="../assets/img/icons/chevron-left.svg" alt="" /></button>
+                <button type="button"><img src="../assets/img/icons/chevron-right.svg" alt="" /></button>
+              </div>
+            </div>
+            <div class="pos-categories">
+              <button class="pos-category active" type="button" data-category="All Categories">
+                <img src="../assets/img/categories/Icon categories.svg" alt="" />
+                <strong>All Categories</strong><span>0 Items</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="pos-section">
+            <div class="pos-products-head">
+              <h2>Products</h2>
+              <label class="table-search">
+                <img src="../assets/img/icons/search.svg" alt="" />
+                <input type="search" placeholder="Search Product" />
+              </label>
+            </div>
+            <div class="pos-products">
+              <div class="pos-empty-state">Memuat produk...</div>
+            </div>
+          </section>
+        </section>
+
+        <aside class="pos-order-panel">
+          <section class="pos-order-head">
+            <div><h2>Order List</h2><p>Id : #0</p></div>
+            <button type="button"><img src="../assets/img/icons/trash-x-filled.svg" alt="" /></button>
+          </section>
+          <section class="pos-customer">
+            <h3>Customer Information</h3>
+            <div class="pos-customer-row">
+              <select><option>Walk In Customer</option></select>
+              <button type="button"><img src="../assets/img/icons/user-plus.svg" alt="" /></button>
+            </div>
+            <select><option>Search Products</option></select>
+          </section>
+          <section class="pos-added">
+            <div><h3>Product Added <span>0</span></h3><button type="button"><img src="../assets/img/icons/x.svg" alt="" /> Clear all</button></div>
+            <div class="pos-empty"><img src="../assets/img/icons/shopping-cart.svg" alt="" /><strong>No Products Selected</strong></div>
+          </section>
+          <section class="pos-billing">
+            <div class="pos-billing-fields">
+              <label>Order Tax<select><option>Choose</option></select></label>
+              <label>Shipping<select><option>0</option></select></label>
+              <label>Discount<div><select><option>%</option></select><input value="0" /></div></label>
+            </div>
+            <h3>Payment Method</h3>
+            <div class="pos-payment-methods">
+              <button class="active" type="button"><img src="../assets/img/icons/cash-banknote.svg" alt="" /> Cash</button>
+              <button type="button"><img src="../assets/img/icons/credit-card.svg" alt="" /> Debit Card</button>
+              <button type="button"><img src="../assets/img/icons/scan.svg" alt="" /> Scan</button>
+            </div>
+            <button class="pos-total" type="button">Grand Total : $0.00</button>
+            <div class="pos-final-actions">
+              <button class="hold" type="button"><img src="../assets/img/icons/u_pause-circle.svg" alt="" /> Hold</button>
+              <button class="void" type="button"><img src="../assets/img/icons/trash-2.svg" alt="" /> Void</button>
+              <button class="payment" type="button"><img src="../assets/img/icons/u_money-bill.svg" alt="" /> Payment</button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/pos.js"></script>
+  </body>
+</html>

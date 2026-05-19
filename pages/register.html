@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventur - Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" />
+    <link rel="stylesheet" href="../assets/css/tailwind.css" />
+    <link rel="stylesheet" href="../assets/css/app.css" />
+    <link rel="stylesheet" href="../assets/css/sign-in.css" />
+  </head>
+  <body class="min-w-80 bg-inventur-bg font-sans text-inventur-text antialiased">
+    <main class="auth-page register-page">
+      <img class="signin-logo" src="../assets/img/Logo.svg" alt="Inventur" />
+      <section class="signin-card auth-card register-card">
+        <h1>Register</h1>
+        <p>Create New Inventur Account</p>
+        <form>
+          <label><span class="field-label">Name <span class="required">*</span></span><div class="signin-input"><input name="name" type="text" autocomplete="name" /><img src="../assets/img/icons/user.svg" alt="" /></div></label>
+          <label><span class="field-label">Email Address <span class="required">*</span></span><div class="signin-input"><input name="email" type="email" autocomplete="email" /><img src="../assets/img/icons/mail.svg" alt="" /></div></label>
+          <label><span class="field-label">Password <span class="required">*</span></span><div class="signin-input"><input name="password" type="password" data-password="primary" autocomplete="new-password" /><img src="../assets/img/icons/eye-off.svg" alt="" /></div></label>
+          <label><span class="field-label">Confirm Password <span class="required">*</span></span><div class="signin-input"><input name="confirmPassword" type="password" data-password="confirm" autocomplete="new-password" /><img src="../assets/img/icons/eye-off.svg" alt="" /></div></label>
+          <button class="btn btn-primary signin-submit register-submit" type="button">Sign Up</button>
+          <p class="auth-switch">Already on our platform? <a href="./sign-in.html">Sign In Instead</a></p>
+          <div class="divider"><span></span>OR<span></span></div>
+          <div id="google-register-button" class="google-button-host" aria-label="Register with Google">
+            <button class="google-button google-fallback" type="button"><img src="../assets/img/icons/Google Logo.svg" alt="Google" /><span>Sign up with Google</span></button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/register.js"></script>
+  </body>
+</html>

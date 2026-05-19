@@ -1,0 +1,29 @@
+.products-page {
+  padding-top: 20px;
+}
+
+.products-actions {
+  margin-bottom: 20px;
+}
+
+.products-table th:nth-child(2) {
+  display: table-cell;
+}
+
+.products-table th:nth-child(2) img {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: -2px;
+}
+
+.products-table .action-cell {
+  justify-content: flex-end;
+}
+
+@media (min-width: 1500px) {
+  .products-page {
+    padding: 28px 32px;
+  }
+}

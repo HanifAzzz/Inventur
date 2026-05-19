@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  password     String?
+  name         String
+  initials     String
+  googleId     String?       @unique
+  avatarUrl    String?
+  createdAt    DateTime      @default(now())
+  products     Product[]
+  transactions Transaction[]
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Product {
+  id               Int               @id @default(autoincrement())
+  sku              String            @unique
+  itemCode         String            @unique
+  name             String
+  slug             String            @unique
+  description      String?
+  price            Float
+  unit             String            @default("Pc")
+  qty              Int               @default(0)
+  imageUrl         String?
+  store            String?
+  warehouse        String?
+  sellingType      String?
+  subCategory      String?
+  barcodeSymbology String?
+  taxType          String?
+  discountType     String?
+  warranty         String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  category         Category          @relation(fields: [categoryId], references: [id])
+  categoryId       Int
+  brand            Brand             @relation(fields: [brandId], references: [id])
+  brandId          Int
+  createdBy        User              @relation(fields: [createdById], references: [id])
+  createdById      Int
+  transactionItems TransactionItem[]
+}
+
+model Transaction {
+  id        Int               @id @default(autoincrement())
+  orderId   String            @unique
+  total     Float
+  discount  Float             @default(0)
+  shipping  Float             @default(0)
+  tax       Float             @default(0)
+  payment   String            @default("cash")
+  status    String            @default("completed")
+  createdAt DateTime          @default(now())
+  customer  String?
+  user      User              @relation(fields: [userId], references: [id])
+  userId    Int
+  items     TransactionItem[]
+  invoice   Invoice?
+}
+
+model TransactionItem {
+  id            Int         @id @default(autoincrement())
+  qty           Int
+  price         Float
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId Int
+}
+
+model Invoice {
+  id            Int         @id @default(autoincrement())
+  invoiceNumber String      @unique
+  amount        Float
+  paid          Float       @default(0)
+  due           Float
+  dueDate       DateTime
+  status        String      @default("Unpaid")
+  customer      String
+  createdAt     DateTime    @default(now())
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId Int         @unique
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventur - Create Product</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" />
+    <link rel="stylesheet" href="../assets/css/tailwind.css" />
+    <link rel="stylesheet" href="../assets/css/app.css" />
+    <link rel="stylesheet" href="../assets/css/create-product.css" />
+  </head>
+  <body class="min-w-80 bg-inventur-bg font-sans text-inventur-text antialiased">
+    <div class="app-shell grid min-h-screen grid-cols-[250px_minmax(0,1fr)] max-[980px]:grid-cols-1">
+      <aside class="app-sidebar sticky top-0 z-20 flex h-screen flex-col border-r border-inventur-border bg-white max-[980px]:static max-[980px]:h-auto">
+        <a class="app-logo flex h-[82px] items-center border-b border-inventur-border px-6 py-5 max-[980px]:h-auto" href="./dashboard.html"><img src="../assets/img/Logo.svg" alt="Inventur" /></a>
+        <nav class="app-nav flex flex-1 flex-col gap-[22px] p-[26px_22px] max-[980px]:grid max-[980px]:grid-cols-2">
+          <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0"><p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Main</p><a class="nav-link flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold" href="./dashboard.html"><img src="../assets/img/icons/layout-grid-neutral.svg" alt="" />Dashboard</a></section>
+          <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0"><p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Inventory</p><a class="nav-link active flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold" href="./products.html"><img src="../assets/img/icons/box.svg" alt="" />Products</a></section>
+          <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0"><p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Reports</p><a class="nav-link flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold" href="./invoice-reports.html"><img src="../assets/img/icons/invoice-report.svg" alt="" />Invoice Report</a></section>
+          <section class="nav-group grid gap-2.5 border-b border-inventur-border pb-5 last:border-b-0"><p class="nav-label m-0 text-xs font-bold leading-[18px] text-inventur-heading">Settings</p><a class="nav-link flex min-h-[50px] items-center gap-3 rounded-lg px-3.5 text-sm font-semibold" href="./sign-in.html"><img src="../assets/img/icons/logout.svg" alt="" />Logout</a></section>
+        </nav>
+      </aside>
+      <main class="app-main flex min-w-0 flex-col">
+        <header class="app-topbar flex min-h-[82px] items-center justify-end gap-3.5 border-b border-inventur-border bg-white px-8 py-4 max-[980px]:flex-wrap max-[980px]:justify-start"><a class="btn btn-navy inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-[18px] text-sm font-semibold" href="./pos.html"><img src="../assets/img/icons/device-laptop.svg" alt="" />POS</a></header>
+        <section class="app-content create-page min-w-0 px-8 py-7 max-[980px]:p-5">
+          <div class="page-title-row">
+            <div class="page-title"><h1>Create Product</h1><div class="breadcrumb"><span>Dashboard</span><span>›</span><span>Create Product</span></div></div>
+            <div class="page-actions"><button class="icon-btn"><img src="../assets/img/icons/Refresh Icon.svg" alt="" /></button><button class="icon-btn"><img src="../assets/img/icons/chevron-up.svg" alt="" /></button><a class="btn btn-navy" href="./products.html"><img src="../assets/img/icons/arrow-left.svg" alt="" />Back to Products</a></div>
+          </div>
+
+          <form class="create-form">
+            <section class="form-card card rounded-lg border border-inventur-border bg-white shadow-inventur">
+              <header><h2><img src="../assets/img/icons/info-circle.svg" alt="" />Product Information</h2><img src="../assets/img/icons/circle-chevron-down.svg" alt="" /></header>
+              <div class="form-grid two">
+                <label><span class="field-label">Store</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Main Store">Main Store</option>
+                  <option value="Outlet A">Outlet A</option>
+                  <option value="Outlet B">Outlet B</option>
+                </select></label>
+                <label><span class="field-label">Warehouse</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Central Warehouse">Central Warehouse</option>
+                  <option value="North Warehouse">North Warehouse</option>
+                  <option value="Online Stock">Online Stock</option>
+                </select></label>
+                <label><span class="field-label">Product Name <span class="required">*</span></span><input class="field" /></label>
+                <label><span class="field-label">Slug <span class="required">*</span></span><input class="field" /></label>
+                <label><span class="field-label">SKU <span class="required">*</span></span><div class="input-action"><input class="field" /><button type="button">Generate</button></div></label>
+                <label><span class="field-label">Selling Type</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Wholesale">Wholesale</option>
+                  <option value="POS">POS</option>
+                </select></label>
+                <label><span class="field-label">Category <span class="required">*</span></span><div class="label-action"><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Computers">Computers</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Shoe">Shoe</option>
+                  <option value="Furniture">Furniture</option>
+                  <option value="Bags">Bags</option>
+                  <option value="Phone">Phone</option>
+                </select><a>Add New</a></div></label>
+                <label><span class="field-label">Sub Category</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Headphones">Headphones</option>
+                  <option value="Sneakers">Sneakers</option>
+                  <option value="Chair">Chair</option>
+                  <option value="Backpack">Backpack</option>
+                  <option value="Phone Accessories">Phone Accessories</option>
+                </select></label>
+                <label><span class="field-label">Brand <span class="required">*</span></span><div class="label-action"><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Lenovo">Lenovo</option>
+                  <option value="Apple">Apple</option>
+                  <option value="Nike">Nike</option>
+                  <option value="Beats">Beats</option>
+                  <option value="Amazon">Amazon</option>
+                  <option value="Dior">Dior</option>
+                </select><a>Add New</a></div></label>
+                <label><span class="field-label">Unit <span class="required">*</span></span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Pc">Pc</option>
+                  <option value="Box">Box</option>
+                  <option value="Pack">Pack</option>
+                  <option value="Kg">Kg</option>
+                  <option value="Liter">Liter</option>
+                </select></label>
+                <label><span class="field-label">Item Code <span class="required">*</span></span><div class="input-action"><input class="field" /><button type="button">Generate</button></div></label>
+                <label><span class="field-label">Barcode Symbology</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Code 128">Code 128</option>
+                  <option value="Code 39">Code 39</option>
+                  <option value="EAN-13">EAN-13</option>
+                  <option value="UPC-A">UPC-A</option>
+                </select></label>
+              </div>
+              <label class="description-label">Description
+                <div class="editor">
+                  <div class="editor-toolbar"><b>B</b><i>I</i><u>U</u><span>S</span><img src="../assets/img/icons/chain.svg" alt="" /><img src="../assets/img/icons/dotted-list.svg" alt="" /><span>66</span><img src="../assets/img/icons/insert-code.svg" alt="" /></div>
+                  <textarea placeholder="Type your message"></textarea>
+                  <div class="editor-footer"><img src="../assets/img/icons/clip.svg" alt="" /><img src="../assets/img/icons/smiley.svg" alt="" /><img src="../assets/img/icons/trashcan.svg" alt="" /><span></span><img src="../assets/img/icons/Send Icon.svg" alt="" /></div>
+                </div>
+                <small>Maximum 60 Words</small>
+              </label>
+            </section>
+
+            <section class="form-card card rounded-lg border border-inventur-border bg-white shadow-inventur">
+              <header><h2><img src="../assets/img/icons/cash-banknote.svg" alt="" />Pricing & Stocks</h2><img src="../assets/img/icons/circle-chevron-down.svg" alt="" /></header>
+              <div class="product-type"><strong>Product Type <span class="required">*</span></strong><label><input type="radio" checked /> Single Product</label><label><input type="radio" /> Variable Product</label></div>
+              <div class="form-grid three">
+                <label><span class="field-label">Quantity <span class="required">*</span></span><input class="field" /></label>
+                <label><span class="field-label">Price <span class="required">*</span></span><input class="field" /></label>
+                <label><span class="field-label">Tax Type</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Exclusive">Exclusive</option>
+                  <option value="Inclusive">Inclusive</option>
+                  <option value="No Tax">No Tax</option>
+                </select></label>
+                <label><span class="field-label">Discount Type</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="Percentage">Percentage</option>
+                  <option value="Fixed">Fixed</option>
+                </select></label>
+                <label><span class="field-label">Discount Value</span><input class="field" /></label>
+                <label><span class="field-label">Quantity Alert</span><input class="field" /></label>
+              </div>
+            </section>
+
+            <section class="form-card card rounded-lg border border-inventur-border bg-white shadow-inventur">
+              <header><h2><img src="../assets/img/icons/photo.svg" alt="" />Images</h2><img src="../assets/img/icons/circle-chevron-down.svg" alt="" /></header>
+              <button class="upload-box" type="button"><img src="../assets/img/icons/circle-plus.svg" alt="" />Add Image</button>
+            </section>
+
+            <section class="form-card card rounded-lg border border-inventur-border bg-white shadow-inventur">
+              <header><h2><img src="../assets/img/icons/list.svg" alt="" />Custom Fields</h2><img src="../assets/img/icons/circle-chevron-down.svg" alt="" /></header>
+              <div class="custom-checks"><label><input type="checkbox" checked /> Warranties</label><label><input type="checkbox" checked /> Manufacturer</label><label><input type="checkbox" checked /> Expiry</label></div>
+              <div class="form-grid two">
+                <label><span class="field-label">Warranty</span><select class="select-field">
+                  <option value="">Select</option>
+                  <option value="No Warranty">No Warranty</option>
+                  <option value="6 Months">6 Months</option>
+                  <option value="1 Year">1 Year</option>
+                  <option value="2 Years">2 Years</option>
+                </select></label>
+                <label><span class="field-label">Manufacturer</span><input class="field" /></label>
+                <label><span class="field-label">Manufactured Date</span><input class="field" placeholder="dd/mm/yyyy" /></label>
+                <label><span class="field-label">Expiry On</span><input class="field" placeholder="dd/mm/yyyy" /></label>
+              </div>
+            </section>
+            <div class="form-actions"><button class="btn btn-navy" type="button">Cancel</button><button class="btn btn-primary" type="button">Add Product</button></div>
+          </form>
+        </section>
+      </main>
+    </div>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/create-product.js"></script>
+  </body>
+</html>

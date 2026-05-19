@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@source "../../index.html";
+@source "../../pages/**/*.html";
+@source "../js/**/*.js";
+
+@theme {
+  --font-sans: "Nunito Sans", Inter, Arial, sans-serif;
+  --color-inventur-bg: #f7f7f7;
+  --color-inventur-surface: #ffffff;
+  --color-inventur-text: #212b36;
+  --color-inventur-heading: #092c4c;
+  --color-inventur-muted: #646b72;
+  --color-inventur-border: #e6eaed;
+  --color-inventur-orange: #fe9f43;
+  --color-inventur-navy: #092c4c;
+  --color-inventur-green: #35b779;
+  --color-inventur-red: #ff0000;
+  --shadow-inventur: 0 4px 18px rgba(9, 44, 76, 0.05);
+  --shadow-inventur-strong: 0 10px 32px rgba(9, 44, 76, 0.08);
+}
