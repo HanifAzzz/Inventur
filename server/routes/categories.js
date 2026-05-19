@@ -1,15 +1,26 @@
 const router = require("express").Router();
-const { prisma, requireAuth } = require("../middleware");
+const { sql, requireAuth } = require("../middleware");
 
 // GET /api/categories
 router.get("/", async (req, res) => {
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: { name: "asc" },
-      include: { _count: { select: { products: true } } },
-    });
+    const rows = await sql`
+      SELECT c.id, c.name, c.created_at,
+        COUNT(p.id)::int AS "_count_products"
+      FROM categories c
+      LEFT JOIN products p ON p.category_id = c.id
+      GROUP BY c.id, c.name, c.created_at
+      ORDER BY c.name ASC
+    `;
+    const categories = rows.map((r) => ({
+      id:        r.id,
+      name:      r.name,
+      createdAt: r.created_at,
+      _count:    { products: r._count_products },
+    }));
     res.json(categories);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Gagal mengambil kategori" });
   }
 });
@@ -19,10 +30,14 @@ router.post("/", requireAuth, async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) return res.status(400).json({ error: "Nama kategori wajib diisi" });
-    const category = await prisma.category.create({ data: { name } });
-    res.status(201).json(category);
+
+    const rows = await sql`
+      INSERT INTO categories (name) VALUES (${name}) RETURNING *
+    `;
+    const r = rows[0];
+    res.status(201).json({ id: r.id, name: r.name, createdAt: r.created_at });
   } catch (err) {
-    if (err.code === "P2002") return res.status(409).json({ error: "Kategori sudah ada" });
+    if (err.code === "23505") return res.status(409).json({ error: "Kategori sudah ada" });
     res.status(500).json({ error: "Gagal membuat kategori" });
   }
 });
@@ -31,13 +46,13 @@ router.post("/", requireAuth, async (req, res) => {
 router.put("/:id", requireAuth, async (req, res) => {
   try {
     const { name } = req.body;
-    const category = await prisma.category.update({
-      where: { id: Number(req.params.id) },
-      data: { name },
-    });
-    res.json(category);
+    const rows = await sql`
+      UPDATE categories SET name = ${name} WHERE id = ${Number(req.params.id)} RETURNING *
+    `;
+    if (!rows[0]) return res.status(404).json({ error: "Kategori tidak ditemukan" });
+    const r = rows[0];
+    res.json({ id: r.id, name: r.name, createdAt: r.created_at });
   } catch (err) {
-    if (err.code === "P2025") return res.status(404).json({ error: "Kategori tidak ditemukan" });
     res.status(500).json({ error: "Gagal update kategori" });
   }
 });
@@ -45,10 +60,12 @@ router.put("/:id", requireAuth, async (req, res) => {
 // DELETE /api/categories/:id
 router.delete("/:id", requireAuth, async (req, res) => {
   try {
-    await prisma.category.delete({ where: { id: Number(req.params.id) } });
+    const rows = await sql`
+      DELETE FROM categories WHERE id = ${Number(req.params.id)} RETURNING id
+    `;
+    if (!rows[0]) return res.status(404).json({ error: "Kategori tidak ditemukan" });
     res.json({ message: "Kategori berhasil dihapus" });
   } catch (err) {
-    if (err.code === "P2025") return res.status(404).json({ error: "Kategori tidak ditemukan" });
     res.status(500).json({ error: "Gagal hapus kategori" });
   }
 });

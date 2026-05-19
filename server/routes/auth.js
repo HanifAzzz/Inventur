@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { prisma, bcrypt, jwt, SECRET } = require("../middleware");
+const { sql, bcrypt, jwt, SECRET } = require("../middleware");
 const { OAuth2Client } = require("google-auth-library");
 
 const rawGoogleClientId = process.env.GOOGLE_CLIENT_ID || "";
@@ -22,7 +22,7 @@ function publicUser(user) {
     email: user.email,
     name: user.name,
     initials: user.initials,
-    avatarUrl: user.avatarUrl,
+    avatarUrl: user.avatar_url,
   };
 }
 
@@ -34,20 +34,20 @@ function signUserToken(user) {
   );
 }
 
-
-// GET /api/auth/config — kirim Google Client ID ke frontend
+// GET /api/auth/config
 router.get("/config", (req, res) => {
   res.json({ googleClientId: GOOGLE_CLIENT_ID });
 });
 
-// POST /api/auth/login — login dengan email & password
+// POST /api/auth/login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password)
       return res.status(400).json({ error: "Email dan password wajib diisi" });
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const rows = await sql`SELECT * FROM users WHERE email = ${email} LIMIT 1`;
+    const user = rows[0];
     if (!user || !user.password)
       return res.status(401).json({ error: "Email atau password salah" });
 
@@ -56,7 +56,6 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Email atau password salah" });
 
     const token = signUserToken(user);
-
     res.json({ token, user: publicUser(user) });
   } catch (err) {
     console.error(err);
@@ -64,46 +63,40 @@ router.post("/login", async (req, res) => {
   }
 });
 
-
-// POST /api/auth/register — buat akun email & password
+// POST /api/auth/register
 router.post("/register", async (req, res) => {
   try {
-    const name = String(req.body.name || "").trim();
-    const email = String(req.body.email || "").trim().toLowerCase();
+    const name     = String(req.body.name     || "").trim();
+    const email    = String(req.body.email    || "").trim().toLowerCase();
     const password = String(req.body.password || "");
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password)
       return res.status(400).json({ error: "Nama, email, dan password wajib diisi" });
-    }
-    if (!email.includes("@")) {
+    if (!email.includes("@"))
       return res.status(400).json({ error: "Format email tidak valid" });
-    }
-    if (password.length < 4) {
+    if (password.length < 4)
       return res.status(400).json({ error: "Password minimal 4 karakter" });
-    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-        initials: makeInitials(name, email),
-      },
-    });
+    const initials = makeInitials(name, email);
 
+    const rows = await sql`
+      INSERT INTO users (email, password, name, initials)
+      VALUES (${email}, ${hashedPassword}, ${name}, ${initials})
+      RETURNING *
+    `;
+    const user = rows[0];
     const token = signUserToken(user);
     res.status(201).json({ token, user: publicUser(user) });
   } catch (err) {
     console.error("Register error:", err);
-    if (err.code === "P2002") {
+    if (err.code === "23505")
       return res.status(409).json({ error: "Email sudah terdaftar" });
-    }
     res.status(500).json({ error: "Gagal membuat akun" });
   }
 });
 
-// POST /api/auth/google — login / register via Google OAuth
+// POST /api/auth/google
 router.post("/google", async (req, res) => {
   try {
     const { credential } = req.body;
@@ -113,7 +106,6 @@ router.post("/google", async (req, res) => {
     if (!GOOGLE_CLIENT_ID)
       return res.status(500).json({ error: "GOOGLE_CLIENT_ID belum dikonfigurasi di server" });
 
-    // Verifikasi ID token dari Google
     const ticket = await googleClient.verifyIdToken({
       idToken: credential,
       audience: GOOGLE_CLIENT_ID,
@@ -125,30 +117,32 @@ router.post("/google", async (req, res) => {
     if (!email)
       return res.status(400).json({ error: "Email tidak ditemukan di akun Google" });
 
-    // Buat initials dari nama (maks 2 huruf kapital)
     const safeName = name || email.split("@")[0];
     const initials = makeInitials(safeName, email);
 
-    // Upsert: cari user by googleId ATAU email, lalu update / buat baru
-    let user = await prisma.user.findFirst({
-      where: { OR: [{ googleId }, { email }] },
-    });
+    // Cari user berdasarkan google_id atau email
+    let rows = await sql`
+      SELECT * FROM users WHERE google_id = ${googleId} OR email = ${email} LIMIT 1
+    `;
+    let user = rows[0];
 
     if (user) {
-      // Update info Google yang mungkin berubah
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: { googleId, avatarUrl, name: safeName },
-      });
+      const updated = await sql`
+        UPDATE users SET google_id = ${googleId}, avatar_url = ${avatarUrl}, name = ${safeName}
+        WHERE id = ${user.id}
+        RETURNING *
+      `;
+      user = updated[0];
     } else {
-      // Buat user baru — tanpa password (Google user)
-      user = await prisma.user.create({
-        data: { email, name: safeName, initials, googleId, avatarUrl },
-      });
+      const created = await sql`
+        INSERT INTO users (email, name, initials, google_id, avatar_url)
+        VALUES (${email}, ${safeName}, ${initials}, ${googleId}, ${avatarUrl})
+        RETURNING *
+      `;
+      user = created[0];
     }
 
     const token = signUserToken(user);
-
     res.json({ token, user: publicUser(user) });
   } catch (err) {
     console.error("Google auth error:", err);
@@ -156,7 +150,7 @@ router.post("/google", async (req, res) => {
   }
 });
 
-// GET /api/auth/me — verifikasi token
+// GET /api/auth/me
 router.get("/me", (req, res) => {
   const header = req.headers.authorization || "";
   const token  = header.startsWith("Bearer ") ? header.slice(7) : null;

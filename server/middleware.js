@@ -3,9 +3,8 @@ require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
 const jwt    = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { PrismaClient } = require("@prisma/client");
+const { sql } = require("./db");
 
-const prisma = new PrismaClient();
 const SECRET = process.env.JWT_SECRET || "inventur-secret-key-2024";
 
 function requireAuth(req, res, next) {
@@ -20,4 +19,4 @@ function requireAuth(req, res, next) {
   }
 }
 
-module.exports = { prisma, jwt, bcrypt, SECRET, requireAuth };
+module.exports = { sql, jwt, bcrypt, SECRET, requireAuth };
